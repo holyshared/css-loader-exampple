@@ -1,3 +1,4 @@
+const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -9,6 +10,9 @@ module.exports = [
     mode: process.env.NODE_ENV,
     entry: {
       client: "./src/client.ts"
+    },
+    output: {
+      path: path.resolve(__dirname, './public/assets'),
     },
     module: {
       rules: [
@@ -49,7 +53,7 @@ module.exports = [
         cleanOnceBeforeBuildPatterns: ['public/assets/js'],
         cleanStaleWebpackAssets: false
       }),
-      new MiniCssExtractPlugin({}),
+      new MiniCssExtractPlugin(),
     ],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
