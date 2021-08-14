@@ -13,6 +13,8 @@ module.exports = [
     },
     output: {
       path: path.resolve(__dirname, './public/assets'),
+      filename: "js/[name].js",
+      assetModuleFilename: 'images/[hash][ext][query]'
     },
     module: {
       rules: [
@@ -32,19 +34,19 @@ module.exports = [
             {
               loader: MiniCssExtractPlugin.loader
             },
-            "css-loader",
+            {
+              loader: "css-loader",
+              options: {
+                url: true,
+                importLoaders: 2,
+              }
+            },
             "sass-loader"
           ]
         },
         {
           test: /\.(jpg|jpeg|png|svg|gif|ico)$/,
-          use: {
-            loader: "file-loader",
-            options: {
-              publicPath: '/assets/images',
-              outputPath: 'images',
-            }
-          }
+          type: "asset/resource",
         }
       ],
     },
@@ -53,7 +55,9 @@ module.exports = [
         cleanOnceBeforeBuildPatterns: ['public/assets/js'],
         cleanStaleWebpackAssets: false
       }),
-      new MiniCssExtractPlugin(),
+      new MiniCssExtractPlugin({
+        filename: "css/[name].css"
+      }),
     ],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
